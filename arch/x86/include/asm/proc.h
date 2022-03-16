@@ -54,6 +54,8 @@ static __always_inline void cpu_relax(void)
     asm volatile("rep nop" ::: "memory");
 }
 
+extern void __init cpu_early_init(void);
+
 extern void proc_thread_setup(struct regs *regs, size_t ip, size_t sp);
 extern state proc_thread_copy(enum clone_flags flags, struct sched_task *curr, struct sched_task *child, void *arg);
 extern state proc_thread_switch(struct sched_task *prev, struct sched_task *next);

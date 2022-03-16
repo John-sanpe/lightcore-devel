@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-obj-y += boot/ lib/ mm/
+obj-y += boot/ lib/ mm/ cpu/
 obj-y += setup.o proc.o
 obj-y += idt.o irq.o traps.o
 obj-y += e820.o tsc.o syscall.o
