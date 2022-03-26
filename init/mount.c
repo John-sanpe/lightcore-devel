@@ -50,7 +50,7 @@ static state __init mount_block_root(void)
 #ifdef CONFIG_ROMDISK
 static state __init mount_romdisk_root(void)
 {
-    return -ENOERR;
+    return auto_mount("/dev/romdisk", MOUNT_RDONLY);
 }
 #endif
 

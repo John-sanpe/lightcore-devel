@@ -2,10 +2,17 @@
 #ifndef _ASM_CSKY_SETJMP_H_
 #define _ASM_CSKY_SETJMP_H_
 
-#define JMP_BUF_LEN 36
-typedef char jmp_buf[JMP_BUF_LEN];
+#define JMP_BUF_SP      0
+#define JMP_BUF_L0      1
+#define JMP_BUF_L1      2
+#define JMP_BUF_L2      3
+#define JMP_BUF_L3      4
+#define JMP_BUF_L4      5
+#define JMP_BUF_L5      6
+#define JMP_BUF_GB      7
+#define JMP_BUF_LR      8
+#define JMP_BUF_REGS    9
 
-extern int __returns_twice setjmp(jmp_buf env);
-extern void __noreturn longjmp(jmp_buf env, int val);
+#include <asm-generic/setjmp.h>
 
 #endif /* _ASM_CSKY_SETJMP_H_ */

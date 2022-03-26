@@ -4,8 +4,8 @@
  */
 
 #include <boot.h>
+#include <ioops.h>
 #include <driver/platform/gx6605s.h>
-#include <asm/io.h>
 
 static uint32_t pll_get_factors(uint32_t freq, uint32_t *n, uint32_t *m)
 {
@@ -29,7 +29,7 @@ static uint32_t pll_get_factors(uint32_t freq, uint32_t *n, uint32_t *m)
 static uint32_t dto_freq_set(unsigned int channel, uint32_t fin, uint32_t freq)
 {
     uint32_t div = (uint64_t)freq * 0x40000000 / fin;
-    void *reg = GCTL_BASE + GX6605S_DTO1_CONFIG + (4 * (channel - 1));
+    void *reg = GCTL_BASE + GX6605S_DTO0_CONFIG + (4 * (channel - 1));
 
     /**
      * div = freq * 2^30 / fin
@@ -66,10 +66,10 @@ uint32_t ccu_axi(uint32_t cpu, uint32_t freq)
 {
     uint32_t val, div = cpu / freq;
 
-    val = readl(GCTL_BASE + GX6605S_CLOCK_DIV_CONFIG2);
+    val = readl(GCTL_BASE + GX6605S_CLOCK_DIV_CONFIG1);
     val &= ~(0x0f << 0);
     val |=  (div & 0x0f) << 0;
-    writel(GCTL_BASE + GX6605S_CLOCK_DIV_CONFIG2, val);
+    writel(GCTL_BASE + GX6605S_CLOCK_DIV_CONFIG1, val);
 
     return cpu / div;
 }
@@ -84,15 +84,15 @@ uint32_t ccu_ahb(uint32_t cpu, uint32_t freq)
 {
     uint32_t val, div = cpu / freq;
 
-    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL2);
+    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL1);
     val &= ~(0x0f << 28);
     val |= ((div + 2) & 0x0f) << 28;
-    writel(GCTL_BASE + GX6605S_SOURCE_SEL2, val);
+    writel(GCTL_BASE + GX6605S_SOURCE_SEL1, val);
 
     /* Selcect the CPU clock to from xtal to PLL */
-    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL1);
-    val |= GX6605S_SOURCE_SEL1_CPU;
-    writel(GCTL_BASE + GX6605S_SOURCE_SEL1, val);
+    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL0);
+    val |= GX6605S_SOURCE_SEL0_CPU;
+    writel(GCTL_BASE + GX6605S_SOURCE_SEL0, val);
 
     return cpu / div;
 }
@@ -106,15 +106,15 @@ uint32_t ccu_apb(uint32_t dto, uint32_t freq)
 {
     uint32_t val, ret;
 
-    ret = dto_freq_set(10, dto, freq); /* APB ir and other*/
-    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL1);
-    val |= GX6605S_SOURCE_SEL1_IR;
-    writel(GCTL_BASE + GX6605S_SOURCE_SEL1, val);
+    ret = dto_freq_set(10, dto, freq); /* APB ir and other */
+    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL0);
+    val |= GX6605S_SOURCE_SEL0_APB;
+    writel(GCTL_BASE + GX6605S_SOURCE_SEL0, val);
 
     dto_freq_set(11, dto, freq); /* APB uart */
-    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL1);
-    val |= GX6605S_SOURCE_SEL1_UART;
-    writel(GCTL_BASE + GX6605S_SOURCE_SEL1, val);
+    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL0);
+    val |= GX6605S_SOURCE_SEL0_UART;
+    writel(GCTL_BASE + GX6605S_SOURCE_SEL0, val);
 
     return ret;
 }
@@ -135,9 +135,9 @@ uint32_t ccu_dram(uint32_t freq)
     writel(GCTL_BASE + GX6605S_PLL_DDR_BASE, val);
 
     /* this is for dramc, phy and port clock */
-    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL1);
-    val |= GX6605S_SOURCE_SEL1_DRAMC;
-    writel(GCTL_BASE + GX6605S_SOURCE_SEL1, val);
+    val = readl(GCTL_BASE + GX6605S_SOURCE_SEL0);
+    val |= GX6605S_SOURCE_SEL0_DRAMC;
+    writel(GCTL_BASE + GX6605S_SOURCE_SEL0, val);
 
     return ret;
 }
@@ -146,7 +146,7 @@ uint32_t ccu_init(void)
 {
     uint32_t val, n, m, ret;
 
-    writel(GCTL_BASE + GX6605S_SOURCE_SEL1, 0x00);
+    writel(GCTL_BASE + GX6605S_SOURCE_SEL0, 0x00);
 
     ret = pll_get_factors(dto_freq, &n, &m);
     writel(GCTL_BASE + GX6605S_PLL_DTO_BASE, (1 << 14)|(n << 8)| m);

@@ -21,5 +21,15 @@
 void icache_inval_all(void);
 void dcache_writeback_all(void);
 
+static inline void cache_flush_vmap(void)
+{
+    dcache_writeback_all();
+}
+
+static inline void cache_flush_vunmap(void)
+{
+    dcache_writeback_all();
+}
+
 #endif  /* __ASSEMBLY__ */
 #endif  /* __ASM_CSKY_CACHE_H */

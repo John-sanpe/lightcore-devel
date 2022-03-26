@@ -3,11 +3,25 @@
  * Copyright(c) 2021 Sanpe <sanpeqf@gmail.com>
  */
 
-#include <asm/proc.h>
+#include <kernel.h>
+#include <task.h>
+#include <proc.h>
+#include <kcontext.h>
 #include <irqflags.h>
-#include <export.h>
 
-state proc_thread_switch(struct sched_task *prev, struct sched_task *next)
+state proc_thread_copy(struct task_clone_args *args, struct sched_task *child)
+{
+    // if (child->flags & SCHED_TASK_KTHREAD) {
+    //     child->kcontext.stack = child->stack;
+    //     child->kcontext.ssize = THREAD_SIZE;
+    //     makecontext(&child->kcontext, (state (*)(void))entry_kthread_return, 2, args->entry, args->arg);
+    //     return -ENOERR;
+    // }
+
+    return -ENOERR;
+}
+
+state proc_thread_switch(struct sched_task *prev)
 {
     return -ENOERR;
 }
@@ -29,16 +43,13 @@ void __noreturn proc_halt(void)
     for (;;)
     proc_idle();
 }
-EXPORT_SYMBOL(proc_halt);
 
 void __noreturn proc_poweroff(void)
 {
     proc_halt();
 }
-EXPORT_SYMBOL(proc_poweroff);
 
 void __noreturn proc_reset(void)
 {
     proc_halt();
 }
-EXPORT_SYMBOL(proc_reset);

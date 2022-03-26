@@ -9,14 +9,6 @@
 #include <lightcore/asm/byteorder.h>
 #include <asm-generic/header.h>
 
-static inline uint32_t crc32(const uint8_t *src, int len, uint32_t crc)
-{
-    uint32_t tmp = crc;
-    while (len--)
-        tmp = (tmp >> 8) ^ crc32_table[(tmp & 0xff) ^ *src++];
-    return tmp ^ crc;
-}
-
 static inline __noreturn void spiflash_boot(void)
 {
     struct uboot_head head;
@@ -27,7 +19,7 @@ static inline __noreturn void spiflash_boot(void)
     if (norflash_id())
         panic("norflash not found\n");
 
-    norflash_read((void *)&head, head_addr, sizeof(head));
+    norflash_read((void *)&head, HEAD_ADDR, sizeof(head));
     if (be32_to_cpu(head.magic) != UBOOT_MAGIC)
         panic("norflash bad image\n");
 
@@ -39,9 +31,9 @@ static inline __noreturn void spiflash_boot(void)
     pr_boot("data size: %d\n", size);
     pr_boot("load address: %#x\n", load);
     pr_boot("entry point: %#x\n", entry);
-    norflash_read((void *)load, head_addr + sizeof(head), size);
+    norflash_read((void *)load, HEAD_ADDR + sizeof(head), size);
 
-    newcrc = crc32((void *)load, size, ~0);
+    newcrc = crc32_inline((void *)load, size, ~0);
     if (oldcrc != newcrc)
         panic("crc error 0x%x->0x%x\n", oldcrc, newcrc);
 

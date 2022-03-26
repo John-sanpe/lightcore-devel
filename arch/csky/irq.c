@@ -8,6 +8,7 @@
 #include <irqflags.h>
 #include <asm/entry.h>
 #include <asm/regs.h>
+#include <panic.h>
 
 static void (*irq_table[IRQ_NR_MAX])(void) __aligned(1024) = {
     [VEC_RESET]         = entry_generic_interrupt,

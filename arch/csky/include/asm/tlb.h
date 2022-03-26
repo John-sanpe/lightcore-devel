@@ -2,24 +2,16 @@
 #ifndef _ASM_CSKY_TLB_H_
 #define _ASM_CSKY_TLB_H_
 
+#include <asm/page.h>
 #include <asm/regs.h>
+
+#define TLB_LINE_SHIFT      (PAGE_SHIFT + 1)
+#define TLB_LINE_SIZE       (_AC(1,UL) << PGDIR_SHIFT)
+#define TLB_LINE_MASK       (~(PGDIR_SIZE - 1))
 
 #ifdef CONFIG_CSKY_ABIV1
 
-static inline void tlb_probe(void)
-{
-    cpwcr("cpcr8", MCIR_TLBP);
-}
-
-static inline void tlb_read(void)
-{
-    cpwcr("cpcr8", MCIR_TLBR);
-}
-
-static inline void tlb_inval_indexed(void)
-{
-	cpwcr("cpcr8", MCIR_TLBINVD);
-}
+struct memory;
 
 static inline void tlb_inval_all(void)
 {
@@ -28,6 +20,11 @@ static inline void tlb_inval_all(void)
 
 #endif  /* CONFIG_CSKY_ABIV1 */
 
-void tlb_refresh(size_t addr);
+extern void tlb_inval_page(uintptr_t page);
+extern void tlb_inval_range(uintptr_t start, uintptr_t end);
+
+extern void tlb_inval_mm(struct memory *mm);
+extern void tlb_inval_mm_page(struct memory *mm, uintptr_t page);
+extern void tlb_inval_mm_range(struct memory *mm, uintptr_t start, uintptr_t end);
 
 #endif  /* _ASM_CSKY_TLBFLUSH_H_ */

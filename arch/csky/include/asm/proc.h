@@ -7,15 +7,22 @@
 #include <asm/regs.h>
 #include <asm/barrier.h>
 
+enum clone_flags;
 struct sched_task;
+struct task_clone_args;
 
-void proc_thread_setup(struct regs *regs, size_t ip, size_t sp);
-state proc_thread_switch(struct sched_task *prev, struct sched_task *next);
+struct proc_context {
 
-void proc_idle(void);
-void __noreturn proc_reset(void);
-void __noreturn proc_halt(void);
-void __noreturn proc_poweroff(void);
+};
+
+extern void proc_thread_setup(struct regs *regs, size_t ip, size_t sp);
+extern state proc_thread_copy(struct task_clone_args *args, struct sched_task *child);
+extern state proc_thread_switch(struct sched_task *prev);
+
+extern void proc_idle(void);
+extern void __noreturn proc_reset(void);
+extern void __noreturn proc_halt(void);
+extern void __noreturn proc_poweroff(void);
 
 #define cpu_relax() barrier()
 

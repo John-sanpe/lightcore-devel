@@ -53,6 +53,7 @@
             compatible = "nationalchip,gx6605s-timer";
             reg = <0x0020a000 0x1000>;
             interrupts = <10>;
+            clocks = <&gctl GX6605S_DTO_APB>;
         };
 
         wdt: watchdog@20b000 {
@@ -78,18 +79,19 @@
         };
 
         serial@403000 {
-            compatible = "ns16550a";
-            reg = <0x00403000 0x1000>;
+            compatible = "nationalchip,gx6605s-uart";
+            reg = <0x00400000 0x1000>;
             interrupts = <15>;
-            clock-frequency = <29491200>;
-            baud = <115200>;
             reg-shift = <2>;
             reg-io-width = <1>;
+            clocks = <&gctl GX6605S_DTO_UART>;
         };
 
         gctl: chip-config@40a000 {
             compatible = "nationalchip,gx6605s-gctl";
             reg = <0x0040a000 0x1000>;
+            clocks = <&osc27M>;
+            #clock-cells = <1>;
         };
 
         intc: interrupt-controller@500000 {
@@ -126,11 +128,12 @@
         jpeg@4400000 {
             compatible = "nationalchip,gx6605s-vpu";
             reg = <0x04400000 0x1000>;
+            clocks = <&gctl GX6605S_DTO_JPEG>;
         };
 
         vpu@4800000 {
             compatible = "nationalchip,gx6605s-vpu";
-            reg = <0x04800000 0x1000>;
+            reg = <0x04000000 0x1000>;
         };
 
         vout@4804000 {

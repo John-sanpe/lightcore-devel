@@ -25,18 +25,18 @@
 #define DRAMC_BASE  ((void *)(SSEG1_BASE + 0x00c00000))
 #define DRAM_BASE   ((void *)(SSEG1_BASE + 0x10000000))
 
-#define head_addr   0x2000
+#define HEAD_ADDR   0x2000
+#define IMAGE_MAGIC 0x55aa55aaU
 
 void __noreturn kboot_start(void *jump);
 void __noreturn halt(void);
 
-extern uint32_t ccu_init(void);
 extern uint32_t ccu_cpu(uint32_t dto, uint32_t freq);
 extern uint32_t ccu_axi(uint32_t cpu, uint32_t freq);
 extern uint32_t ccu_ahb(uint32_t cpu, uint32_t freq);
 extern uint32_t ccu_apb(uint32_t dto, uint32_t freq);
 extern uint32_t ccu_dram(uint32_t freq);
-
+extern uint32_t ccu_init(void);
 extern void dramc_init(void);
 
 extern uint32_t time_read(void);

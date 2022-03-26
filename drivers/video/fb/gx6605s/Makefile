@@ -1,3 +1,1 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
-obj-y += boot/
-obj-y += main.o page.o

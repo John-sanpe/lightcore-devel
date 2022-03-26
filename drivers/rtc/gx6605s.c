@@ -35,8 +35,6 @@ static state gx6605s_rtc_gettime(struct rtc_device *rtc, struct rtc_time *time)
 {
     struct gx6605s_device *gdev = rtc_to_gx6605s(rtc);
 
-    time->tm_us   = gx6605s_read(gdev, GX6605S_RTC_US);
-    time->tm_ms   = gx6605s_read(gdev, GX6605S_RTC_MS);
     time->tm_sec  = gx6605s_read(gdev, GX6605S_RTC_SEC);
     time->tm_min  = gx6605s_read(gdev, GX6605S_RTC_MIN);
     time->tm_hour = gx6605s_read(gdev, GX6605S_RTC_HOUR);
@@ -51,8 +49,6 @@ static state gx6605s_rtc_settime(struct rtc_device *rtc, struct rtc_time *time)
 {
     struct gx6605s_device *gdev = rtc_to_gx6605s(rtc);
 
-    gx6605s_write(gdev, GX6605S_RTC_US, time->tm_us);
-    gx6605s_write(gdev, GX6605S_RTC_MS, time->tm_ms);
     gx6605s_write(gdev, GX6605S_RTC_SEC, time->tm_sec);
     gx6605s_write(gdev, GX6605S_RTC_MIN, time->tm_min);
     gx6605s_write(gdev, GX6605S_RTC_HOUR, time->tm_hour);
@@ -67,8 +63,6 @@ static state gx6605s_rtc_getalarm(struct rtc_device *rtc, struct rtc_alarm *alar
 {
     struct gx6605s_device *gdev = rtc_to_gx6605s(rtc);
 
-    alarm->time.tm_us   = gx6605s_read(gdev, GX6605S_RTC_ALM1_US);
-    alarm->time.tm_ms   = gx6605s_read(gdev, GX6605S_RTC_ALM1_MS);
     alarm->time.tm_sec  = gx6605s_read(gdev, GX6605S_RTC_ALM1_SEC);
     alarm->time.tm_min  = gx6605s_read(gdev, GX6605S_RTC_ALM1_MIN);
     alarm->time.tm_hour = gx6605s_read(gdev, GX6605S_RTC_ALM1_HOUR);
@@ -85,8 +79,6 @@ static state gx6605s_rtc_setalarm(struct rtc_device *rtc, struct rtc_alarm *alar
     struct gx6605s_device *gdev = rtc_to_gx6605s(rtc);
     uint32_t val;
 
-    gx6605s_write(gdev, GX6605S_RTC_ALM1_US,    alarm->time.tm_us);
-    gx6605s_write(gdev, GX6605S_RTC_ALM1_MS,    alarm->time.tm_ms);
     gx6605s_write(gdev, GX6605S_RTC_ALM1_SEC,   alarm->time.tm_sec);
     gx6605s_write(gdev, GX6605S_RTC_ALM1_MIN,   alarm->time.tm_min);
     gx6605s_write(gdev, GX6605S_RTC_ALM1_HOUR,  alarm->time.tm_hour);

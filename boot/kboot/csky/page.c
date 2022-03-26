@@ -4,7 +4,7 @@
  */
 
 #include <size.h>
-#include <asm/mmu.h>
+#include <asm/regs.h>
 
 void kernel_map(void)
 {

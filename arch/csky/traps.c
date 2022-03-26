@@ -6,6 +6,7 @@
 #include <linkage.h>
 #include <kernel.h>
 #include <printk.h>
+#include <panic.h>
 #include <asm/backtrace.h>
 #include <asm/proc.h>
 

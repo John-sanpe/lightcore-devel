@@ -13,6 +13,8 @@
 #include <printk.h>
 #include <export.h>
 
+unsigned long loops_per_tick = (1 << 12);
+
 void static_call_proc_ndelay(unsigned long nsec)
 {
     proc_ndelay(nsec);

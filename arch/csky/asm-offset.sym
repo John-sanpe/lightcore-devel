@@ -1,0 +1,64 @@
+-- SPDX-License-Identifier: GPL-2.0-or-later
+#include <types.h>
+#include <stddef.h>
+
+-- regs
+
+#include <asm/regs.h>
+#define regs(member) offsetof(struct regs, member)
+
+REGS_PSR        regs(psr)
+REGS_PC         regs(pc)
+REGS_SP         regs(sp)
+REGS_R1         regs(r1)
+REGS_A0         regs(a0)
+REGS_A1         regs(a1)
+REGS_A2         regs(a2)
+REGS_A3         regs(a3)
+REGS_A4         regs(a4)
+REGS_A5         regs(a5)
+REGS_L0         regs(l0)
+REGS_L1         regs(l1)
+REGS_L2         regs(l2)
+REGS_L3         regs(l3)
+REGS_L4         regs(l4)
+REGS_L5         regs(l5)
+REGS_GB         regs(gb)
+REGS_LR         regs(lr)
+
+-- setjmp
+
+#include <setjmp.h>
+#define jmpbuf(member) offsetof(jmp_buf, member)
+#define jreg(reg) jmpbuf(regs[reg])
+
+SETJMP_SP       jreg(JMP_BUF_SP)
+SETJMP_L0       jreg(JMP_BUF_L0)
+SETJMP_L1       jreg(JMP_BUF_L1)
+SETJMP_L2       jreg(JMP_BUF_L2)
+SETJMP_L3       jreg(JMP_BUF_L3)
+SETJMP_L4       jreg(JMP_BUF_L4)
+SETJMP_L5       jreg(JMP_BUF_L5)
+SETJMP_GB       jreg(JMP_BUF_GB)
+SETJMP_LR       jreg(JMP_BUF_LR)
+
+-- kcontext
+
+#include <kcontext.h>
+#define kcontext(member) offsetof(struct kcontext, member)
+#define mcontext(member) kcontext(mcontext.regs[member])
+
+KCONTEXT_LINK   kcontext(link)
+KCONTEXT_STA    kcontext(stack)
+KCONTEXT_STS    kcontext(ssize)
+KCONTEXT_RET    kcontext(retval)
+
+KCONTEXT_SP     mcontext(KC_BUF_SP)
+KCONTEXT_L0     mcontext(KC_BUF_L0)
+KCONTEXT_L1     mcontext(KC_BUF_L1)
+KCONTEXT_L2     mcontext(KC_BUF_L2)
+KCONTEXT_L3     mcontext(KC_BUF_L3)
+KCONTEXT_L4     mcontext(KC_BUF_L4)
+KCONTEXT_L5     mcontext(KC_BUF_L5)
+KCONTEXT_GB     mcontext(KC_BUF_GB)
+KCONTEXT_LR     mcontext(KC_BUF_LR)
