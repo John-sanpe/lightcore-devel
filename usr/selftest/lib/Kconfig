@@ -21,6 +21,10 @@ config SELFTEST_LIB_DCALL
     bool "Dynamic Call Test"
     default y
 
+config SELFTEST_LIB_FLOAT
+    bool "Float Operation Test"
+    default y
+
 config SELFTEST_LIB_GLOB
     bool "Glob Parser Test"
     default y

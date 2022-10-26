@@ -31,6 +31,11 @@ typedef u16                     uint16_t;
 typedef u32                     uint32_t;
 typedef u64                     uint64_t;
 
+typedef float					float_t;
+typedef double					double_t;
+typedef float_t                 float32_t;
+typedef double_t                float64_t;
+
 #if defined(CONFIG_ARCH_HAS_INT128) && defined(__SIZEOF_INT128__)
 #define TYPE_HAS_INT128
 typedef __int128                s128;

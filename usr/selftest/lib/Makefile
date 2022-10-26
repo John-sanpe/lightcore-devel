@@ -3,6 +3,7 @@ obj-$(CONFIG_SELFTEST_LIB_BITOPS)   += bitops.o
 obj-$(CONFIG_SELFTEST_LIB_BTREE)    += btree.o
 obj-$(CONFIG_SELFTEST_LIB_DIV64)    += div64.o
 obj-$(CONFIG_SELFTEST_LIB_DCALL)    += dynamic-call.o
+obj-$(CONFIG_SELFTEST_LIB_FLOAT)    += float.o
 obj-$(CONFIG_SELFTEST_LIB_GLOB)     += glob.o
 obj-$(CONFIG_SELFTEST_LIB_HEAP)     += heap.o
 obj-$(CONFIG_SELFTEST_LIB_HLIST)    += hlist.o

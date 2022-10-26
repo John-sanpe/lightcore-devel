@@ -1,5 +1,6 @@
-#ifndef _FLOAT_H__
-#define _FLOAT_H__
+/* SPDX-License-Identifier: GPL-2.0-or-later */
+#ifndef _FLOAT_H_
+#define _FLOAT_H_
 
 #define FLT_RADIX			(2)
 
@@ -36,4 +37,4 @@
 #define LDBL_HAS_SUBNORM	(1)
 #define LDBL_DECIMAL_DIG	(DECIMAL_DIG)
 
-#endif
+#endif  /* _FLOAT_H_ */
