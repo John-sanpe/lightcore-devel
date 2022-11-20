@@ -34,6 +34,7 @@ static __always_inline atomic_t arch_atomic_xchg(atomic_t *atomic, atomic_t val)
 {
     return arch_xchg(atomic, val);
 }
+
 /**
  * arch_atomic_cmpxchg - cmp and xchg atomic variable
  * @atomic: pointer of type atomic_t

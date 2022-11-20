@@ -72,13 +72,12 @@ EXPORT_SYMBOL(complete_all);
 
 bool completion_done(struct completion *comp)
 {
-    irqflags_t flags;
-
     if (!READ_ONCE(comp->counter))
         return false;
 
-    spin_lock_irqsave(&comp->queue.lock, &flags);
-    spin_unlock_irqrestore(&comp->queue.lock, &flags);
+    while (spin_locked(&comp->queue.lock))
+        cpu_relax();
+
     return true;
 }
 EXPORT_SYMBOL(completion_done);

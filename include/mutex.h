@@ -7,9 +7,9 @@
 #include <list.h>
 
 struct mutex {
+    atomic_t owner;
     spinlock_t lock;
-    atomic_t atomic;
-    struct list_head list;
+    struct list_head waits;
 };
 
 #define MUTEX_LOCK(name) \
