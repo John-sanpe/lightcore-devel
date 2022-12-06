@@ -59,7 +59,7 @@ extern void __asan_set_shadow_f3(const void *addr, size_t size);
 extern void __asan_set_shadow_f5(const void *addr, size_t size);
 extern void __asan_set_shadow_f8(const void *addr, size_t size);
 
-/* kasan core */
-extern bool kasan_report(unsigned long addr, size_t size, bool is_write, unsigned long ip);
+extern bool kasan_report(uintptr_t addr, size_t size, bool write, uintptr_t ip);
+extern bool kasan_check_region(uintptr_t addr, size_t size, bool write, uintptr_t rip);
 
 #endif  /* _KASAN_H_ */

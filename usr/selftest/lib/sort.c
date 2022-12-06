@@ -9,7 +9,7 @@
 #include <selftest.h>
 #include <initcall.h>
 
-#define TEST_LOOP 100
+#define TEST_LOOP 8
 
 struct sort_test_node {
     unsigned int index;

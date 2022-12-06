@@ -3,8 +3,11 @@
  * Copyright(c) 2021 Sanpe <sanpeqf@gmail.com>
  */
 
-#include <memory.h>
+#include <kmalloc.h>
 #include <fs/dirent.h>
+
+
+
 
 static struct dirent *dirent_alloc(struct superblock *sb )
 {

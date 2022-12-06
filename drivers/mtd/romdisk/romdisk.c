@@ -13,8 +13,6 @@
 #include <driver/platform.h>
 #include <driver/mtd.h>
 
-struct platform_device *romdisk_device;
-
 static state romdisk_read(struct mtd_device *mtd, loff_t pos, void *buf, uint64_t len, uint64_t *retlen)
 {
     memcpy(buf, _ld_romdisk_start + pos, len);
@@ -55,6 +53,8 @@ static struct platform_driver romdisk_driver = {
 
 static state romdisk_init(void)
 {
+    struct platform_device *romdisk_device;
+
     romdisk_device = platform_unified_register(&romdisk_driver, NULL, 0);
     if (!romdisk_device)
         return -ENOMEM;

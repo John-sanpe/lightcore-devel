@@ -8,6 +8,7 @@
 #include <export.h>
 
 static LIST_HEAD(fsdev_list);
+static SPIN_LOCK(fsdev_lock);
 
 /**
  * fsdev_read - read data form a filesystem device
@@ -54,7 +55,10 @@ state fsdev_register(struct fsdev *fsdev)
     if (!fsdev->ops)
         return -EINVAL;
 
+    spin_lock(&fsdev_lock);
     list_add(&fsdev_list, &fsdev->list);
+    spin_unlock(&fsdev_lock);
+
     return -ENOERR;
 }
 EXPORT_SYMBOL(fsdev_register);
@@ -65,6 +69,8 @@ EXPORT_SYMBOL(fsdev_register);
  */
 void fsdev_unregister(struct fsdev *fsdev)
 {
+    spin_lock(&fsdev_lock);
     list_del(&fsdev->list);
+    spin_unlock(&fsdev_lock);
 }
 EXPORT_SYMBOL(fsdev_unregister);

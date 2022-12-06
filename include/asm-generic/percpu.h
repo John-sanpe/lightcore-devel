@@ -2,6 +2,8 @@
 #ifndef _ASM_GENERIC_PERCPU_H_
 #define _ASM_GENERIC_PERCPU_H_
 
+#ifndef __ASSEMBLY__
+
 #ifdef CONFIG_SMP
 # define PER_CPU_SECTION(__sec) ".percpu" #__sec
 #else
@@ -36,4 +38,5 @@
 # define thiscpu(name) percpu(0, name)
 #endif
 
+#endif  /* __ASSEMBLY__ */
 #endif  /* _ASM_GENERIC_PERCPU_H_ */

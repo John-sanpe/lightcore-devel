@@ -468,10 +468,12 @@ EXPORT_SYMBOL(btree_remove);
 
 void btree_destroy(struct btree_root *root)
 {
-
     struct btree_layout *layout = root->layout;
-    uintptr_t key[layout->keylen], tkey[layout->keylen];
+    uintptr_t *key, *tkey;
     void *value, *tval;
+
+    key = alloca(sizeof(uintptr_t) * layout->keylen);
+    tkey = alloca(sizeof(uintptr_t) * layout->keylen);
 
     btree_for_each_safe(root, key, value, tkey, tval)
         btree_remove(root, key);

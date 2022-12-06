@@ -12,7 +12,7 @@ struct namei {
 
 };
 
-static state path_walk(const char *path, struct namei *namei)
+static state path_resolution(struct namei *namei, const char *path)
 {
 
     while (*path == '/')

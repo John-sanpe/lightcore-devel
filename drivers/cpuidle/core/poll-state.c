@@ -62,7 +62,7 @@ static __cpuidle state poll_entry(struct cpuidle_device *cdev, unsigned int *ind
 
 static const struct cpuidle_state cpuidle_poll_state = {
     .name = "poll",
-    .name = "cpuidle poll idle",
+    .desc = "cpuidle poll idle",
     .target_residency = 0,
     .exit_latency = 0,
     .power_usage = -1,

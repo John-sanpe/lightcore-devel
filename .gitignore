@@ -30,3 +30,6 @@
 /arch/*/include/generated/
 /lightcore
 /bochsout.txt
+
+# Not submitted temporarily
+/github-push.sh

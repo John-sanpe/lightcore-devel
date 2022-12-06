@@ -43,6 +43,11 @@
     };
 
     isa {
+        wdt@441 {
+            compatible = "ibase,ib700-wdt";
+            reg = <0x0441 0x03>;
+        };
+
         pci: pci@cf8 {
             compatible = "intel,i386-pci";
             reg = <0x0cf8 0x08>;

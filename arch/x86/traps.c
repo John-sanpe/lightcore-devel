@@ -104,7 +104,13 @@ DEFINE_IDTENTRY_NORMAL(bounds)
 
 DEFINE_IDTENTRY_NORMAL(device_not_available)
 {
-    generic_trap(regs, 0, TRAP_NM, "device not available");
+    unsigned long value = cr0_get();
+
+    /* Try to fix it up and carry on. */
+    if (unlikely(value & CR0_TS))
+        cr0_set(value | CR0_TS);
+    else
+        generic_trap(regs, 0, TRAP_NM, "device not available");
 }
 
 DEFINE_IDTENTRY_NORMAL(coprocessor_error)
