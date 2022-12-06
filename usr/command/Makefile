@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 obj-y += arch/
 obj-$(CONFIG_KCMD_ASCII85)  += ascii85.o
+obj-$(CONFIG_KCMD_BASE32)   += base32.o
 obj-$(CONFIG_KCMD_BASE64)   += base64.o
 obj-$(CONFIG_KCMD_BASENAME)	+= basename.o
 obj-$(CONFIG_KCMD_BREAK)    += break.o
@@ -13,6 +14,7 @@ obj-$(CONFIG_KCMD_EXIT)     += exit.o
 obj-$(CONFIG_KCMD_EXPORT)   += export.o
 obj-$(CONFIG_KCMD_FALSE)    += false.o
 obj-$(CONFIG_KCMD_GOTO)     += goto.o
+obj-$(CONFIG_KCMD_GPIO)     += gpio.o
 obj-$(CONFIG_KCMD_GREP)     += grep.o
 obj-$(CONFIG_KCMD_HEAD)     += head.o
 obj-$(CONFIG_KCMD_LOOP)     += loop.o

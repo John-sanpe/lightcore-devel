@@ -146,16 +146,20 @@ struct sched_task {
     state errnum;
     state exit_code;
 
-#ifdef CONFIG_UBSAN
-    unsigned int ubsan_depth;
-#endif
+    struct filesystem *fs;
+    void *pdata;
 
 #ifdef CONFIG_SMP
     struct sched_queue *queue;
 #endif
 
-    struct filesystem *fs;
-    void *pdata;
+#ifdef CONFIG_UBSAN
+    unsigned int ubsan_depth;
+#endif
+
+#ifdef CONFIG_STACKPROTECTOR
+    unsigned long stack_canary;
+#endif
 };
 
 #define kcontext_to_task(ptr) \
@@ -287,8 +291,8 @@ static inline void task_set_state(struct sched_task *task, unsigned long state)
     WRITE_ONCE(task->state, state);
 }
 
-GENERIC_STRUCT_BITOPS(task, struct sched_task, flags)
-GENERIC_STRUCT_BITOPS(task, struct sched_task, queued)
+GENERIC_STRUCT_BITOPS(task, struct sched_task, flags, false)
+GENERIC_STRUCT_BITOPS(task, struct sched_task, queued, false)
 
 #define SCHED_TASK_FLAG_OPS(ops, name, bit)                                     \
 static inline void task_set_##name(struct sched_task *task)                     \
