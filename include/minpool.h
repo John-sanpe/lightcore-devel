@@ -2,7 +2,13 @@
 #ifndef _MINPOOL_H_
 #define _MINPOOL_H_
 
+#include <types.h>
+#include <stddef.h>
 #include <list.h>
+
+#ifndef MINPOOL_ALIGN
+# define MINPOOL_ALIGN 16
+#endif
 
 struct minpool_head {
     struct list_head block_list;

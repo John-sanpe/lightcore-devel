@@ -39,47 +39,70 @@ gnode_set_size(struct minpool_node *node, size_t size)
     node->usize |= size & BIT_HIGH_MASK(0);
 }
 
-/**
- * gpool_find - Get first qualified node in mempool.
- * @head: Minimum mempool to get node.
- * @size: Node minimum size to get.
- */
-static struct minpool_node *gpool_find(struct minpool_head *head, size_t size)
+static __always_inline void
+gnode_set(struct minpool_node *node, size_t size, bool used)
 {
-    struct minpool_node *node;
-
-    list_for_each_entry(node, &head->free_list, free) {
-        if (gnode_get_size(node) >= size)
-            return node;
-    }
-
-    return NULL;
+    node->usize = (size & BIT_HIGH_MASK(0)) | used;
 }
 
 /**
- * minpool_alloc - Minimum mempool allocation.
+ * minpool_align - Minimum mempool align allocation.
  * @head: Minimum mempool to operate.
  * @size: Size to allocation.
+ * @size: Align to allocation.
  */
-void *minpool_alloc(struct minpool_head *head, size_t size)
+void *minpool_align(struct minpool_head *head, size_t size, size_t align)
 {
-    struct minpool_node *node, *free;
-    size_t fsize;
+    struct minpool_node *node, *free = NULL;
+    size_t fsize, delta;
 
-    size = align_high(size, MSIZE);
+    align = max(align_high(align, MINPOOL_ALIGN), MINPOOL_ALIGN);
+    size = align_high(size, align);
+
     if (unlikely(size > head->avail))
         return NULL;
 
     /* Get the free memory block */
-    node = gpool_find(head, size);
-    if (!node)
+    list_for_each_entry(node, &head->free_list, free) {
+        delta = align_high((uintptr_t)node->data, align) - (uintptr_t)node;
+        fsize = gnode_get_size(node);
+        if (delta + size <= fsize) {
+            free = node;
+            break;
+        }
+    }
+
+    if (unlikely(!free))
         return NULL;
 
-    fsize = gnode_get_size(node);
-    if (fsize > sizeof(*free) + MSIZE + size) {
-        struct minpool_node *free;
+    if (delta) {
+        struct minpool_node *prev;
 
-        /* Setup the new free block */
+        prev = list_prev_entry_or_null(node, &head->block_list, block);
+        if ()
+
+        /* Prevent self coverage */
+        list_del(&node->block);
+        list_del_init(&node->free);
+
+        /* Setup the used node */
+        node = align_ptr_high((void *)node->data, align) - sizeof(*node);
+        list_del(&node->block);
+
+        /* Setup the prev free block */
+        if (delta >= MINPOOL_ALIGN)
+
+        else {
+
+
+        }
+    }
+
+    gnode_set(node, fsize - delta, true);
+
+    /* Setup the next free block */
+    fsize =
+    if (fsize - size > sizeof(*free) + MINPOOL_ALIGN) {
         free = (void *)(node->data + size);
         gnode_set_size(free, fsize - size - sizeof(*free));
         gnode_set_used(free, false);
@@ -92,15 +115,11 @@ void *minpool_alloc(struct minpool_head *head, size_t size)
         fsize = size;
     }
 
-    /* Set node used */
-    gnode_set_used(node, true);
-    list_del_init(&node->free);
-
     /* Adjust heap available size */
     head->avail -= fsize;
     return node->data;
 }
-EXPORT_SYMBOL(minpool_alloc);
+EXPORT_SYMBOL(minpool_align);
 
 /**
  * minpool_free - Minimum mempool release.
